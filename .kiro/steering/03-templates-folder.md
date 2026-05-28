@@ -1,0 +1,187 @@
+---
+inclusion: fileMatch
+fileMatchPattern: ['templates/**']
+---
+
+# Folder 2: templates/ — Page Definitions (13 files)
+
+## Role
+
+Templates **kamron ka plan** hain. Har page type ke liye ek JSON file batati hai: "Is page pe kaunsi sections dikhaao?"
+
+## Why JSON Templates? (Shopify 2.0 Revolution)
+
+**Old Liquid Templates**: Code mein sections hardcoded — merchant ko developer chahiye change ke liye  
+**JSON Templates**: Drag & drop in Customizer — merchant khud sections add/remove/reorder kare
+
+## Files (13 Total — 12 JSON + 1 Liquid)
+
+| # | File | Page | URL | When |
+|---|------|------|-----|------|
+| 1 | `index.json` | Home page | `/` | Default landing |
+| 2 | `product.json` | Product page | `/products/[handle]` | Product click |
+| 3 | `collection.json` | Collection page | `/collections/[handle]` | Collection view |
+| 4 | `cart.json` | Cart page | `/cart` | Cart view |
+| 5 | `page.json` | Generic pages | `/pages/[handle]` | About, FAQ, etc. |
+| 6 | `page.contact.json` | Contact page | `/pages/contact` | Contact form |
+| 7 | `blog.json` | Blog listing | `/blogs/[handle]` | Blog index |
+| 8 | `article.json` | Single blog post | `/blogs/[blog]/[article]` | Article click |
+| 9 | `search.json` | Search results | `/search` | Search submission |
+| 10 | `404.json` | Not Found | Invalid URL | Wrong URL |
+| 11 | `password.json` | Password page | When store closed | Password protect |
+| 12 | `list-collections.json` | All collections | `/collections` | Categories index |
+| 13 | `gift_card.liquid` | Gift card | `/gift_cards/[id]` | LEGACY (last `.liquid` template) |
+
+## JSON Template Structure
+
+```json
+{
+  "sections": {
+    "hero_jVaWmY": {
+      "type": "hero",
+      "blocks": {
+        "text_abc123": {
+          "type": "text",
+          "settings": {
+            "content": "<p>Welcome to our store</p>"
+          }
+        },
+        "button_xyz456": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "url": "/collections/all"
+          }
+        }
+      },
+      "block_order": ["text_abc123", "button_xyz456"],
+      "settings": {
+        "color_scheme": "scheme-2"
+      }
+    },
+    "product_list_fa6P9H": {
+      "type": "product-list",
+      "settings": {
+        "collection": "summer-collection"
+      }
+    }
+  },
+  "order": [
+    "hero_jVaWmY",
+    "product_list_fa6P9H"
+  ]
+}
+```
+
+### Key JSON Properties
+
+- **`sections`**: Object with section instance IDs → settings
+- **`type`**: Filename in `/sections/` folder (without .liquid)
+- **`blocks`**: Block instances inside section
+- **`block_order`**: Array of block IDs in display order
+- **`settings`**: Section-level settings
+- **`order`**: Array of section IDs in display order
+
+## Common Section Compositions per Template
+
+### `index.json` (Home Page) Typical
+- hero
+- product-list (featured collection)
+- collection-list (shop by category)
+- featured-blog-posts
+- media-with-content
+- email-signup (in footer-group)
+
+### `product.json` (Product Page) Typical
+- product-information (the main section)
+- product-recommendations
+- featured-blog-posts (sometimes)
+
+### `collection.json` (Collection Page) Typical
+- main-collection (filters + grid + pagination)
+- product-recommendations (sometimes)
+
+### `cart.json` (Cart Page) Typical
+- main-cart (items + summary + checkout)
+- product-recommendations (cross-sell)
+
+### `article.json` (Blog Post) Typical
+- main-blog-post (content + image + comments)
+- featured-blog-posts (related posts)
+
+## IF-THEN Logic
+
+```
+IF: index.json se hero section hatao
+THEN: Home page pe hero nahi dikhega
+→ But other pages pe hero still works (template-specific)
+
+IF: Order array change karo
+THEN: Sections ka sequence badal jayega
+
+IF: Naya section add karo
+THEN: Woh section us specific page pe aa jayega
+
+IF: Section type galat (e.g., "type": "heroo")
+THEN: "Could not find section template heroo.liquid" error
+→ Section type MUST match filename in /sections/ folder
+
+IF: Block type galat
+THEN: Section render hoga but specific block missing
+→ Block type MUST match filename in /blocks/ folder
+
+IF: Custom template create karna ho (e.g., product.special.json)
+THEN: Admin → Products → assign "special" template to specific product
+→ Use case: Special product pages (limited edition, custom layout)
+
+IF: gift_card.liquid (legacy) replace karna ho
+THEN: Cannot — Shopify ne gift card ke liye JSON template support nahi diya yet
+→ Stick with liquid version
+```
+
+## Custom Templates (Power Feature)
+
+Multiple templates per page type create ho sakte hain:
+
+- `product.json` — default
+- `product.featured.json` — for featured products (different layout)
+- `product.minimal.json` — for minimalist look
+- `page.about.json` — for about page specific layout
+
+Admin mein product/page pe template assign:
+- Products → Edit → Theme template dropdown
+- Pages → Edit → Theme template dropdown
+
+## Best Practices
+
+1. **Always use JSON templates** — never new `.liquid` templates
+2. **Section IDs unique karo** — auto-generated by Shopify (don't manually duplicate)
+3. **`block_order` array zaroor add karo** — even with 1 block (cleaner editing)
+4. **Settings JSON-valid honi chahiye** — invalid JSON = template crash
+5. **Custom templates for variations** — don't overload single template
+
+## Common Mistakes
+
+| Mistake | Result | Fix |
+|---------|--------|-----|
+| Section type wrong (typo) | "Could not find section" | Match section filename exactly |
+| Block type wrong | Block missing on render | Match block filename exactly |
+| Trailing comma in JSON | Template crash | Validate JSON structure |
+| Missing `block_order` | Blocks render in random order | Always include `block_order` |
+| Section ID duplicates | Render conflict | Use unique IDs per section instance |
+
+## Connection Map
+
+```
+templates/[page].json
+    ↓
+References sections by type
+    ↓
+sections/[type].liquid          ← Section file rendered
+    ↓
+References blocks by type
+    ↓
+blocks/[type].liquid            ← Block file rendered
+    ↓
+Final HTML output to browser
+```
