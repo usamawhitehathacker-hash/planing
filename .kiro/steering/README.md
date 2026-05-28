@@ -14,6 +14,7 @@ Yeh folder Kiro ki **persistent memory** hai. Har conversation mein automaticall
 | `11-code-patterns.md` | Liquid/CSS/JS code patterns and recipes | always |
 | `12-if-then-cascade.md` | Dependency impact reference, severity tiers | always |
 | `13-free-vs-premium.md` | Free Horizon vs 14 premium themes feature gap | always |
+| `14-godfather-mega-prompt.md` | **9,222-word God-Father Mega Prompt** — Premium theme architect agent with full anatomy of 14 premium themes, 140+ feature inventory, 8 code patterns, decision matrix | always |
 
 ### Folder-Specific (load when working in that folder)
 
@@ -60,15 +61,34 @@ These steering files are the **distilled, structured form** of all that knowledg
 ## File Statistics
 
 ```
-14 files
-~95 KB total
-~3,500 lines of organized expert knowledge
+16 files (15 steering + 1 README)
+~245 KB total
+~7,000 lines of organized expert knowledge
+~29,000 words total
 Covers all 419 files of Horizon theme
 100+ IF-THEN scenarios
 50+ code patterns
-14 premium themes referenced
+14 premium themes deeply analyzed (anatomy + signature features)
 8 folder deep-dives
+1 Godfather Mega Prompt (9,222 words)
+140+ premium feature inventory
 ```
+
+## The Godfather Mega Prompt (File 14)
+
+The crown jewel — a 9,222-word self-contained mega prompt that turns me into **The Godfather Shopify Theme Architect**. When user invokes (e.g., "Mega prompt activate", "Premium plan banao", "[Theme] jaisa [feature]"), I produce structured plans with:
+
+- Premium theme equivalence (which premium theme does this best)
+- Free Horizon current state analysis
+- File structure plan (CREATE/MODIFY/READ/AFFECTED)
+- Cascade risk assessment
+- Build sequence (step-by-step)
+- Schema design
+- Code blueprint
+- Performance budget
+- Acceptance criteria
+
+Covers anatomy of: **Prestige, Impulse, Turbo, Flex, Broadcast, Symmetry, Enterprise, Canopy, Taiga, Palo Alto, Concept, Impact, Release, Stiletto, Local** + their signature philosophies.
 
 ## Maintenance
 
